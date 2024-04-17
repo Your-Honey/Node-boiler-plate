@@ -1,0 +1,41 @@
+{
+  "name": "node-ultimate-stack",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "db:console": "docker compose run postgres psql -h postgres -U postgres -d webapp_dev",
+    "db:migrate": "prisma migrate dev",
+    "docker:db:migrate": "docker compose run backend pnpm db:migrate",
+    "rebuild:be": "docker compose build backend && docker compose rm --force --stop backend && docker compose up -d backend",
+    "docker:seed:dev": "docker compose run backend pnpm ts-node scripts/seed/dev.ts",
+    "build": "rimraf dist && swc ./src -d dist",
+    "start": "node dist/src/index.js",
+    "start:docker": "pnpm build &&  node --inspect=0.0.0.0 dist/src/index.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@swc/cli": "^0.3.12",
+    "@swc/core": "^1.4.14",
+    "@tsconfig/node20": "^20.1.4",
+    "@types/express": "^4.17.21",
+    "@types/morgan": "^1.9.9",
+    "@types/node": "^20.12.7",
+    "@typescript-eslint/eslint-plugin": "^7.6.0",
+    "@typescript-eslint/parser": "^7.6.0",
+    "eslint": "^9.0.0",
+    "prisma": "^5.12.1",
+    "rimraf": "^5.0.5",
+    "ts-node": "^10.9.2",
+    "watchy": "^0.10.1"
+  },
+  "dependencies": {
+    "@prisma/client": "^5.12.1",
+    "express": "^4.19.2",
+    "morgan": "^1.10.0",
+    "nanoid": "3",
+    "typescript": "^5.4.5"
+  }
+}

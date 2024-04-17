@@ -1,0 +1,24 @@
+services:
+  postgres:
+    image: postgres:15-alpine
+    ports:
+      - 5432:5432 # enables connecting locally via psql
+    environment:
+      POSTGRES_DB: webapp_dev
+      POSTGRES_HOST_AUTH_METHOD: trust
+
+  backend:
+    build: .
+    depends_on:
+      - postgres
+    ports:
+      - 5000:5000
+      - 9229:9229 # debugger port
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/.pnpm-store
+      - /usr/src/app/node_modules
+    command: pnpm start:docker
+    environment:
+      DATABASE_URL: postgres://postgres@postgres/webapp_dev
+      PORT: 5000
